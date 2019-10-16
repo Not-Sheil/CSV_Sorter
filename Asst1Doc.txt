@@ -1,0 +1,33 @@
+Chris Sheil
+Systems Programming
+Rutgers University: Fall Semester 2018
+Asst1
+
+Design:
+	The design of this code was relativley straightfoward. We first check the command line arguments to make sure critical elements are there such as a sorthing flag "-c" and the correct number of arguments. After we do our preliminary input checks we start traversing through the specified directory structure. We iterate through the directory forking on each CSV we find and any directory we find to send to the file handler. Another design implementation that streamlined the process was using the "dirent" structure. When traversing through the directory it made it very simple to get the names of the files from the directory stream to manipulate as strings. Once that is in string format it becomes very easy to mutate and change as we need. The last design choice that I made was in the handleing of command line arguments. At the time of writing it was unclear which type of processing we will use independent or dependent structure. I used independent structure meaning it does not matter what order the flags are inputted as, it looks for each one and assosiates the next command line argument to that flag. It makes running the code much more flexible and will result in fewer errors overall. I also handled errors in a new way with this program. I think I am following normal convention when I print any fatal errors to both the stdout and std error, which will be redirected to an errorlog.txt, and then exit the code. Any non fatal errors are only redirected to errorlog.txt as warnings. And the code continues running.
+
+Assumptions:
+
+	The assumptions I made in this program were that there will not be a .csv in the file name except for the extention. For example if the file name is this_is_a_.csv!.txt it will count it as a csv file. I think under normal usage and for the puropuse of this project it will be something so rare that I do not guard against it. I hope none of the test cases check for this because I assume under general use this will not be a problem. I also assume that we are not counting the original process as a process. The initial PID is there but the number of processes created is simply the number of files we encounter + the number of directories we encounter.
+	
+
+Difficulties:
+	
+	There were not as much difficulties with this compared to the first program. Besides figuring out how to crawl through a directory structure correctly and finding the correct functions to handle pids. Those two things proved to be difficult especally counting pids. I was able to reuse all my code for sorting and printing. It was mostly setup to sort and output in the correct place and on the correct files. Some general difficulties were setting up the structure of the error condtitions so that nothing fell through the cracks. It felt like a cracking dam where if you patch one hole another one starts leaking. I had to step back and think about how I wanted to check for invalid input holistically. Then make sure that this implementation does not interfere with the operation of the code. That was a bit tedious to test and change, as well as switching my code from not forking on non .csv files to forking on all files found. That took alot of additional thinking and testing to get it right.
+
+How To Use Code: It does not matter the order in which the flags are used. Proper running lines that can be copy pasted are: 
+
+make   /// Will Compile the code. Of course. Using the provided Makefile.
+
+./a.out -o result -c movie_title 2>errorlog.tx /// Will scan through whole directory and redirect stderr to a txt file.
+
+./a.out -c movie_title -d test -o result 2>errorlog.txt /// Will do same thing but starting at the test directory and not CWD
+
+./a.out -c movie_title -d test 2>errorlog.txt /// Will do same thing but output to test which is the CWD at start of program.
+
+GENERAL CASE:
+
+./a.out -c (column) -d(directory) -o(output directory) 2>errorlog.txt
+
+
+
